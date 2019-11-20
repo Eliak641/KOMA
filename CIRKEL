@@ -1,6 +1,59 @@
+import React, { PureComponent } from 'react';
+import { PieChart, Pie, Sector } from 'recharts';
+
 const {PieChart, Pie, Sector} = Recharts;
 const data = [{name: 'Agility', value: 4}, {name: 'Group A', value: 10}];
-                   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* LÄGG IN OM DET BEHÖVS !!!
+body {
+  margin: 0;
+}
+#container {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px;
+  width: 800px;
+  height: 800px;
+  background-color: #fff;
+}
+
+<div id="container">
+    <!-- This element's contents will be replaced with your component. -->
+</div>
+
+*/
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 90;
   const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
@@ -38,9 +91,6 @@ const renderActiveShape = (props) => {
       />
     
     </g>
-     
-  
-    
   );
 };
 
