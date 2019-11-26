@@ -1,0 +1,157 @@
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import React, { PureComponent } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import {round} from 'mathjs'; //npm install mathjs
+import {
+  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid,
+} from 'recharts';
+import styled, { keyframes } from "styled-components"; /*kan styla en <section> när de används*/
+
+/*https://www.styled-components.com/docs/basics */
+	
+	function bar(props){
+      let ratiopercent = (props*10) + "%"; 
+      return(
+        <div className = "bar-Container">
+          <div className = "animated-Bar"style= {{
+              width: ratiopercent,
+              height: "2em",
+              backgroundColor: "#E77474"
+            }} >
+          </div>
+        </div>
+
+
+        );
+    }
+    
+
+function Agility(props) {
+
+	  //gets object date
+  const date = new Date();
+  //array for each day where slot 0 is sunday
+  let daysCounter = [1,25,1,2,3,0,2];
+
+//om anvädaren har gjort ett pass, ett event startar
+ // if(event){
+  //switch-statement to upgrade the number in each slot for the day
+  switch(date.getDay()) {
+    case 0:
+      daysCounter[0]++;
+      break;
+    case 1:
+    daysCounter[1]++;
+      break;
+    case 2:
+    daysCounter[2]++;
+      break;
+    case 3:
+    daysCounter[3]++;
+      break;
+    case 4:
+    daysCounter[4]++;
+      break;
+    case 5:
+    daysCounter[5]++;
+      break;
+    case 6:
+    daysCounter[6]++;
+      break;
+  }
+
+  //save data
+
+//}
+
+  //check date, if sunday 23:59, rinse data
+  if(date.getHours() == 23 && date.getDay() == 0 && date.getMinutes() == 59){
+    daysCounter = [0,0,0,0,0,0,0];
+  }
+
+//staple diagram for each day
+const data = [
+  {
+     name: 'Mon', uv: daysCounter[1], pv: 24000, amt: 2400,
+  },
+  {
+    name: 'Tue', uv: daysCounter[2], pv: 1398, amt: 2210,
+  },
+  {
+    name: 'Wed', uv: daysCounter[3], pv: 9800, amt: 2290,
+  },
+  {
+    name: 'Thur', uv: daysCounter[4], pv: 3908, amt: 2000,
+  },
+  {
+    name: 'Fri', uv: daysCounter[5], pv: 4800, amt: 2181,
+  },
+  {
+    name: 'Sat', uv: daysCounter[6], pv: 3800, amt: 2500,
+  },
+  {
+    name: 'Sun', uv: daysCounter[0], pv: 4300, amt: 2100,
+  },
+];
+	
+	/*skall få button att ändras..*/
+const Button = styled.button` 
+  border-radius: 3px;
+  background-color: white;
+  margin: 1em;
+  padding: 50em 1em;
+  min-width: 25px;
+  max-width: 50px;
+  flex: auto;
+  border-color: #0f93bb;
+  color: #0f93bb;
+  border: 2px solid;
+  color: red;
+  border: 2px solid #ce93db;
+  color: #a9a9a9;
+  border-color: #a9a9a9;
+  flex: 100%;
+  max-width: 150px;
+`;
+	
+	return(
+		<div>
+			<div>
+		         <Link to="/settings"><button type="button">GEAR</button></Link>
+		         <Link to="/homepage"><button type="button">BACK</button></Link>
+		    </div>
+
+        
+        {/* Staple laying down with the percent */}
+        <div id="containerAlltrain">
+          <ul>
+              <li>
+                <Link to="/agility" style={{ textDecoration: 'none'}}> <div> <h3 id="for_link"> AGILITY </h3> </div></Link>
+                {bar(5)}
+              </li>
+          </ul>
+        </div>
+
+
+		     <div className="diagramPosition">
+		     <p className="diagramText">Activity this week</p>
+		    <BarChart width={600} height={300} data={data} 
+		      margin={{
+		       top: 50, right: 10, left: 30, bottom: 5,
+		        }}>
+		        <XAxis dataKey="name" /> 
+		        <YAxis dataKey={ (Math.round(data.uv)) } width={ 70 } allowDecimals={false} /> // Visar y axeln värden
+		        <Bar dataKey="uv" fill="#E77474" />
+		      </BarChart>
+		    </div>
+	    </div>
+
+
+
+
+		);
+
+
+  }
+  export default Agility;
