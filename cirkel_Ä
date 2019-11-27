@@ -1,0 +1,149 @@
+import React, { PureComponent } from 'react';
+import './App.css';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Agility from './Agility';
+import {PieChart, Pie, Sector} from 'recharts';
+import {round} from 'mathjs'; //npm install mathjs
+import {ReactDOM} from 'react-dom';
+
+const data = [{name: 'Agility', value: 4}, {name: 'Group A', value: 10}];
+
+function App(props) {
+/*cirkel*/
+                   
+//const App = (props) => {
+
+  const RADIAN = Math.PI / 90;
+  const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
+    fill, payload, percent, value } = props;
+  const sin = Math.sin(-RADIAN * midAngle);
+  const cos = Math.cos(-RADIAN * midAngle);
+  const sx = cx + (outerRadius + 10) * cos;
+  const sy = cy + (outerRadius + 10) * sin;
+  const mx = cx + (outerRadius + 30) * cos;
+  const my = cy + (outerRadius + 30) * sin;
+  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
+  const ey = my;
+  const textAnchor = cos >= 0 ? 'start' : 'end';
+    
+    return (
+    
+    <div className="ContainerBody">
+
+    <g>
+      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={fill}
+      />
+      <Sector
+        cx={cx}
+        cy={cy}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        innerRadius={outerRadius + 0}
+        outerRadius={outerRadius + 13}
+        fill={fill}
+      />
+    </g>
+
+     <Router>
+
+        <Switch>
+          {/* Homepage */}
+          <Route path = "/homepage">
+            <div><Link to="/settings"><button type="button">Settings</button></Link></div>
+            <div><Link to="/toptraining1"><button type="button">Top Training 1</button></Link>
+            <Link to="/toptraining2"><button type="button">Top Training 2</button></Link>
+            <Link to="/toptraining3"><button type="button">Top Training 3</button></Link></div>
+            <div><Link to="/alltraining"><button type="button">All Training</button></Link></div>
+            <div><Link to="/starttraining"><button type="button">Start Training</button></Link></div>
+             <div><Link to="/agility"><button type="button">agility</button></Link></div>
+
+          </Route>
+
+          {/* Start training */}
+          <Route path = "/agility" component = {Agility}/>
+ 
+          
+      
+        </Switch>
+     </Router>
+     </div>
+     
+  );
+
+}
+
+// <TwoLevelPieChart />
+ 
+ 
+function TwoLevelPieChart() {
+
+  // const [index, setIndex ] = useState(0);
+
+  // flyttar cirkeln tar bort inre cirkeln
+  // onMouseEnter={this.onPieEnter}
+
+   function onPieEnter(data, index) {
+    console.log(index)
+   }
+
+    return (
+      <PieChart width={400} height={300}>
+        <Pie 
+          activeIndex={1}
+          activeShape={App} 
+          data={data} 
+          cx={300} 
+          cy={200} 
+          innerRadius={80} 
+          outerRadius={80} 
+          fill="#E77474"
+          onMouseEnter={onPieEnter}
+        />
+       </PieChart>
+    );
+
+} 
+
+/*
+const TwoLevelPieChart = React.createClass({
+  getInitialState() {
+    return {
+      activeIndex: 0,
+    };
+  },
+
+  render () {
+    return (
+      <PieChart width={400} height={300}>
+        <Pie 
+          activeIndex={this.state.activeIndex}
+          activeShape={App} 
+          data={data} 
+          cx={300} 
+          cy={200} 
+          innerRadius={80} 
+          outerRadius={80} 
+          fill="#E77474"
+          onMouseEnter={this.onPieEnter}
+        />
+       </PieChart>
+    );
+  }
+}) */
+
+/*
+ReactDOM.render(
+  <TwoLevelPieChart />,
+  document.getElementById('container')
+); */
+
+
+export default App;
