@@ -1,0 +1,228 @@
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import React, { PureComponent } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import {round} from 'mathjs'; //npm install mathjs
+import {
+  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, ResponsiveContainer,
+} from 'recharts';
+import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
+import styled, { keyframes } from "styled-components"; /*kan styla en <section> när de används*/
+import { makeStyles } from '@material-ui/core/styles';
+
+/*https://www.styled-components.com/docs/basics */
+
+	/* sets text procent*/
+	function procent(props){
+     
+    switch(props){
+    
+    case 0:
+    return "0%";
+        break;
+    case 1:
+    return "10%";
+        break;
+    case 2:
+    return "20%";
+        break;
+        case 3:
+    return "30%";
+        break;
+        case 4:
+    return "40%";
+        break;
+        case 5:
+    return "50%";
+        break;
+        case 6:
+    return "60%";
+        break;
+        case 7:
+    return "70%";
+        break;
+        case 8:
+    return "80%";
+        break;
+        case 9:
+    return "90%";
+        break;
+        case 10:
+    return "100%";
+        break;
+    }
+  }
+
+  function bar(props){
+
+   
+
+      let ratiopercent = (props*10) + "%"; 
+
+      return(
+        <div className = "bar-Container">
+          
+          <div className = "animated-Bar"style= {{
+              width: ratiopercent,
+              height: "2em",
+              backgroundColor: "#E77474"
+            }} > 
+            <p className = "procent_text"> {procent(props)}  </p>
+            
+          </div>
+        </div>
+
+
+        );
+    }
+
+
+
+function iconStyles() {
+  
+  return {
+    successIcon: {
+      color: 'white',
+      width: 60,
+      height: 60,
+      
+    },
+  }
+}
+
+
+function Agility(props) {
+
+const classes = makeStyles(iconStyles)();
+
+	  //gets object date
+  const date = new Date();
+  //array for each day where slot 0 is sunday
+  let daysCounter = [1,25,1,2,3,0,2];
+
+//om anvädaren har gjort ett pass, ett event startar
+ // if(event){
+  //switch-statement to upgrade the number in each slot for the day
+  switch(date.getDay()) {
+    case 0:
+      daysCounter[0]++;
+      break;
+    case 1:
+    daysCounter[1]++;
+      break;
+    case 2:
+    daysCounter[2]++;
+      break;
+    case 3:
+    daysCounter[3]++;
+      break;
+    case 4:
+    daysCounter[4]++;
+      break;
+    case 5:
+    daysCounter[5]++;
+      break;
+    case 6:
+    daysCounter[6]++;
+      break;
+  }
+
+  //save data
+
+//} 
+
+  //check date, if sunday 23:59, rinse data
+  if(date.getHours() == 23 && date.getDay() == 0 && date.getMinutes() == 59){
+    daysCounter = [0,0,0,0,0,0,0];
+  }
+
+//staple diagram for each day
+const data = [
+  {
+     name: 'Mon', uv: daysCounter[1], pv: 24000, amt: 2400,
+  },
+  {
+    name: 'Tue', uv: daysCounter[2], pv: 1398, amt: 2210,
+  },
+  {
+    name: 'Wed', uv: daysCounter[3], pv: 9800, amt: 2290,
+  },
+  {
+    name: 'Thur', uv: daysCounter[4], pv: 3908, amt: 2000,
+  },
+  {
+    name: 'Fri', uv: daysCounter[5], pv: 4800, amt: 2181,
+  },
+  {
+    name: 'Sat', uv: daysCounter[6], pv: 3800, amt: 2500,
+  },
+  {
+    name: 'Sun', uv: daysCounter[0], pv: 4300, amt: 2100,
+  },
+];
+	/*få fram texten och sedan använda switch som i olika nummer (event) ger olika output*/
+
+	return(
+		<div>
+			 <div className = "gear">
+       <Link to="/settings"><SettingsRoundedIcon type="button" className={classes.successIcon}>  SettingsRounded </SettingsRoundedIcon></Link>
+       </div>
+       <div className = "C">
+		    <Link to="/homepage"><button type="button">BACK</button></Link>
+		    </div>
+
+        
+        {/* Staple laying down with the percent */}
+        <div id="containerAlltrain">
+          <ul>
+              <li>
+                <Link to="/agility" style={{ textDecoration: 'none'}}> <div> <h3 id="for_link"> AGILITY </h3> </div></Link>
+                {bar(2)} 
+              </li>
+          </ul>
+        </div>
+
+        {/*width={400} height={300}*/}
+
+		     <div className="diagramPosition">
+		     <p className="diagramText">Activity this week</p> 
+       
+         <ResponsiveContainer width="100%" height={400}>
+        <BarChart data={data} 
+          margin={{
+           top: 50, right: 0, left: -30, bottom: 0,
+            }}>
+            <XAxis dataKey="name" /> 
+            <YAxis dataKey={ (Math.round(data.uv)) } width={ 70 } allowDecimals={false} /> // Visar y axeln värden
+            <Bar dataKey="uv" fill="#E77474" />
+          </BarChart>
+          </ResponsiveContainer>
+
+
+         
+		    </div>
+	    </div>
+
+		);
+
+
+  }
+  export default Agility;
+
+  /*
+
+  <div className="diagramPosition">
+         <p className="diagramText">Activity this week</p>
+         <ResponsiveContainer width="100%" height={400}>
+        <BarChart data={data} 
+          margin={{
+           top: 50, right: 0, left: -50, bottom: 0,
+            }}>
+            <XAxis dataKey="name" /> 
+            <YAxis dataKey={ (Math.round(data.uv)) } width={ 70 } allowDecimals={false} /> // Visar y axeln värden
+            <Bar dataKey="uv" fill="#E77474" />
+          </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        */
